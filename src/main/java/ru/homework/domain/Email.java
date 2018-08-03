@@ -1,6 +1,6 @@
 package ru.homework.domain;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,11 +17,11 @@ public class Email {
 
     private String email;
 
-    private List<Person> persons;
+    private Set<Person> persons;
     
-    public Email(String email, List<Person> persons) {
+    public Email(String email/*, List<Person> persons*/) {
         this.email = email;
-        this.persons = persons;
+        //this.persons = persons;
     }
 
     @Id
@@ -45,11 +45,11 @@ public class Email {
     }    
     
     @ManyToMany(mappedBy = "emails")
-    public List<Person> getPersons() {
+    public Set<Person> getPersons() {
         return persons;
     }
 
-    public void setPersons(List<Person> persons) {
+    public void setPersons(Set<Person> persons) {
         this.persons = persons;
     }    
 }

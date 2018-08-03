@@ -1,6 +1,6 @@
 package ru.homework.domain;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,9 +19,12 @@ public class Person {
     private int id;
     private String name;
     
-    private List<Email> emails;
+    private Set<Email> emails;
 
-    public Person(String name, List<Email> emails) {
+    public Person() {
+    }        
+    
+    public Person(String name, Set<Email> emails) {
         this.name = name;
         this.emails = emails;
     }
@@ -52,12 +55,17 @@ public class Person {
             joinColumns = { @JoinColumn(name = "person_id") }, 
             inverseJoinColumns = { @JoinColumn(name = "email_id") }
         )
-    public List<Email> getEmails() {
+    public Set<Email> getEmails() {
         return emails;
     }
 
-    public void setEmails(List<Email> emails) {
+    public void setEmails(Set<Email> emails) {
         this.emails = emails;
     }
+    
+    @Override
+    public String toString() {
+        return this.name;
+    }        
     
 }

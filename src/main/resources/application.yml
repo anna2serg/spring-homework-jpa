@@ -1,6 +1,7 @@
-database:   
- host: localhost
- port: 5432
- base: bookcardDB 
- user: scribe
- password: scribe
+spring.shell.interactive.enabled: false
+
+spring.datasource.url: jdbc:postgresql://localhost:5432/bookcardDB 
+spring.datasource.username: scribe 
+spring.datasource.password: scribe 
+spring.jpa.hibernate.ddl-auto: validate
+
