@@ -13,6 +13,6 @@ public interface AuthorRepostory {
 	Author getById(int id);
 	List<Author> getByNames(String surname, String firstname, String middlename);
 	List<Author> getAll(HashMap<String, String> filters);
-	void deleteById(int id);
+	void delete(Author author);
 	
 }

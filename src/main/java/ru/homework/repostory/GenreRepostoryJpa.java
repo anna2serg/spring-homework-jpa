@@ -8,6 +8,9 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,19 +59,14 @@ public class GenreRepostoryJpa implements GenreRepostory {
 
 	@Override
 	public List<Genre> getAll(HashMap<String, String> filters) {
-		String sqlAllGenre = "select g from Genre g ";
-		String sqlWhere = "";
-		String sqlOrder = " order by g.name ";
-		String sql = "";
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Genre> genreCriteria = cb.createQuery(Genre.class);
+		Root<Genre> genreRoot = genreCriteria.from(Genre.class);
+		genreCriteria.select(genreRoot);
 		if (filters.get("name") != null && !filters.get("name").toString().isEmpty()) {
-			sqlWhere = " where LOWER(g.name) like lower(concat('%', :name,'%')) ";	
-		} 	 				
-		sql = sqlAllGenre + sqlWhere + sqlOrder;
-    	TypedQuery<Genre> query = em.createQuery(sql, Genre.class);
-    	if (filters.get("name") != null && !filters.get("name").toString().isEmpty()) {
-    		query.setParameter("name", filters.get("name"));
-    	}   	
-        return query.getResultList();
+			genreCriteria.where(cb.like(cb.lower(genreRoot.get("name")), "%" + filters.get("name").toString().toLowerCase() + "%"));
+		}
+		return em.createQuery(genreCriteria).getResultList();
 	}
 
 	@Override

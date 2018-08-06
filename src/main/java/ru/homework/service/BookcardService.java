@@ -7,8 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.NoResultException;
-
 import org.springframework.stereotype.Service;
 
 import ru.homework.repostory.AuthorRepostory;
@@ -283,7 +281,7 @@ public class BookcardService {
 		List<Book> bookByAuthor = getBookAll(filters);
 		if ((bookByAuthor != null) && (bookByAuthor.size()>0)) 
 			throw new InvalidOperationException("Недопустимая операция: автор используется");
-		authorRepostory.deleteById(exAuthor.getId());
+		authorRepostory.delete(exAuthor);
 		result = true;
 		return result;
 	}		
