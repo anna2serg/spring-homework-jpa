@@ -11,6 +11,10 @@ CREATE SEQUENCE public.genre_seq;
 CREATE SEQUENCE public.author_seq;
 CREATE SEQUENCE public.book_seq;
 
+ALTER SEQUENCE public.genre_seq RESTART WITH 100;
+ALTER SEQUENCE public.author_seq RESTART WITH 100;
+ALTER SEQUENCE public.book_seq RESTART WITH 100;
+
 CREATE TABLE public.genres
 (
     genre_id integer NOT NULL,

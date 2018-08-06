@@ -30,7 +30,7 @@ public class Genre {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "genre_generator")  
-    @SequenceGenerator(name="genre_generator", sequenceName = "genre_seq", allocationSize=1)
+    @SequenceGenerator(name="genre_generator", sequenceName = "genre_seq", initialValue = 100, allocationSize=1)
     @Column(name = "genre_id")    
     public int getId() {
         return id;
