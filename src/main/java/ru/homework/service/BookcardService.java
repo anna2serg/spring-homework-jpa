@@ -255,7 +255,7 @@ public class BookcardService {
 	public boolean deleteBook(String book) throws EntityNotFoundException, NotUniqueEntityFoundException {
 		boolean result = false;
 		Book bookToDelete = getBook(book);
-		bookRepostory.deleteById(bookToDelete.getId());
+		bookRepostory.delete(bookToDelete);
 		result = true;
 		return result;
 	}

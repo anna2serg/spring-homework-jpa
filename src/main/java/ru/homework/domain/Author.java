@@ -1,12 +1,16 @@
 package ru.homework.domain;
 
+import java.util.Set;
+
 //import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 //import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -19,7 +23,7 @@ public class Author {
     private String firstname;
     private String middlename;
     
-    //private Set<Book> books;
+    private Set<Book> books;
     
     public Author() {
         super();
@@ -73,14 +77,14 @@ public class Author {
         this.middlename = middlename;
     }       
     
-    /*@ManyToMany(mappedBy = "authors")
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "authors")
     public Set<Book> getBooks() {
 		return books;
 	}
 
 	public void setBooks(Set<Book> books) {
 		this.books = books;
-	}*/
+	}
 
 	@Override
     public String toString() {

@@ -1,7 +1,9 @@
 package ru.homework.repostory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -10,6 +12,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.springframework.stereotype.Repository;
@@ -63,9 +66,22 @@ public class GenreRepostoryJpa implements GenreRepostory {
 		CriteriaQuery<Genre> genreCriteria = cb.createQuery(Genre.class);
 		Root<Genre> genreRoot = genreCriteria.from(Genre.class);
 		genreCriteria.select(genreRoot);
-		if (filters.get("name") != null && !filters.get("name").toString().isEmpty()) {
-			genreCriteria.where(cb.like(cb.lower(genreRoot.get("name")), "%" + filters.get("name").toString().toLowerCase() + "%"));
+		
+		if (filters.keySet().size() > 0) {
+			final List<Predicate> predicates = new ArrayList<Predicate>();
+			for (final Entry<String, String> e : filters.entrySet()) {
+
+			    final String key = e.getKey();
+			    final String value = e.getValue();
+
+			    if ((key != null) && (value != null)) {
+			    	predicates.add(cb.like(cb.lower(genreRoot.<String> get(key)), "%" + value.toLowerCase() + "%"));
+			    }
+			}
+			
+			genreCriteria.where(cb.or(predicates.toArray(new Predicate[predicates.size()])));			
 		}
+
 		return em.createQuery(genreCriteria).getResultList();
 	}
 

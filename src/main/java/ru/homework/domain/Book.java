@@ -24,6 +24,10 @@ public class Book {
     private String name;
     private Set<Author> authors;
     private Genre genre;
+  
+    public Book() {
+    	super();
+    }       
     
     public Book(String name, Set<Author> authors, Genre genre) {
         this(0, name, authors, genre);
@@ -61,7 +65,7 @@ public class Book {
 
     public void setAuthors(Set<Author> authors) {
     	this.authors = authors;
-    }    
+    } 
     
     public String getName() {
         return name;

@@ -1,13 +1,19 @@
 package ru.homework.repostory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,9 +53,10 @@ public class AuthorRepostoryJpa implements AuthorRepostory {
 	public List<Author> getByNames(String surname, String firstname, String middlename) {
 		try {    	
 	    	String sql = "select a from Author a "
-					 + "where lower(a.surname) = :surname "
-					 + "and lower(a.firstname) = :firstname ";
-	    	sql += (middlename==null) ? " and a.middlename IS NULL " : " and lower(a.middlename) = :middlename ";	    	
+					   + "where lower(a.surname) = :surname "
+				  	   + "and lower(a.firstname) = :firstname ";
+	    	sql += (middlename==null) ? 
+	    			   " and a.middlename IS NULL " : " and lower(a.middlename) = :middlename ";	    	
 	    	TypedQuery<Author> query = em.createQuery(sql, Author.class);
 	    	query.setParameter("surname", surname.trim().toLowerCase());
 	    	query.setParameter("firstname", firstname.trim().toLowerCase());
@@ -63,8 +70,25 @@ public class AuthorRepostoryJpa implements AuthorRepostory {
 
 	@Override
 	public List<Author> getAll(HashMap<String, String> filters) {
-		// TODO Auto-generated method stub
-		return null;
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Author> authorCriteria = cb.createQuery(Author.class);
+		Root<Author> authorRoot = authorCriteria.from(Author.class);
+		authorCriteria.select(authorRoot);		
+		
+		if (filters.keySet().size() > 0) {
+			final List<Predicate> predicates = new ArrayList<Predicate>();		
+			for (final Entry<String, String> filter : filters.entrySet()) {
+			    final String value = filter.getValue();
+			    if ((value != null)) {
+			    	predicates.add(cb.like(cb.lower(authorRoot.get("surname")), "%" + value.toLowerCase() + "%"));
+			    	predicates.add(cb.like(cb.lower(authorRoot.get("firstname")), "%" + value.toLowerCase() + "%"));
+			    	predicates.add(cb.like(cb.lower(authorRoot.get("middlename")), "%" + value.toLowerCase() + "%"));
+			    }			
+			}
+			authorCriteria.where(cb.or(predicates.toArray(new Predicate[predicates.size()])));					
+		} 
+		
+		return em.createQuery(authorCriteria).getResultList();
 	}
 
 	@Override

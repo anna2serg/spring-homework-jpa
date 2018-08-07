@@ -13,6 +13,6 @@ public interface BookRepostory {
 	Book getById(int id);
 	List<Book> getAll(HashMap<String, String> filters);
 	List<Book> getByName(String name);
-	void deleteById(int id);
+	void delete(Book book);
 	
 }
