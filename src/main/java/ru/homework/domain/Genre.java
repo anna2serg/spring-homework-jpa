@@ -39,7 +39,8 @@ public class Genre {
     public void setId(int id) {
         this.id = id;
     }
-
+    
+    @Column(unique = true)
     public String getName() {
         return name;
     }

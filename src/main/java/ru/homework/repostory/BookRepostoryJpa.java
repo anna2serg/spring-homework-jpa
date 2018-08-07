@@ -1,5 +1,6 @@
 package ru.homework.repostory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.springframework.stereotype.Repository;
@@ -58,9 +60,12 @@ public class BookRepostoryJpa implements BookRepostory {
 		Root<Book> bookRoot = bookCriteria.from(Book.class);
 		Join<Book, Genre> withGenreJoin = bookRoot.join("genre", JoinType.LEFT);
 		Join<Book, Author> withAuthorJoin = bookRoot.join("authors", JoinType.LEFT);
-		withGenreJoin.on(cb.equal(withGenreJoin.get("name"), "Учебная литература"));
-		bookCriteria.select(bookRoot);		
-		
+
+		final List<Predicate> predicates = new ArrayList<Predicate>();	
+		predicates.add(cb.equal(withGenreJoin.get("name"), "Учебная литература"));
+		predicates.add(cb.like(cb.lower(withAuthorJoin.get("surname")), "%не%"));
+		bookCriteria.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
+		//bookCriteria.select(bookRoot).where(cb.and(predicates.toArray(new Predicate[predicates.size()])));		
 		/*if (filters.keySet().size() > 0) {
 			final List<Predicate> predicates = new ArrayList<Predicate>();		
 			for (final Entry<String, String> filter : filters.entrySet()) {

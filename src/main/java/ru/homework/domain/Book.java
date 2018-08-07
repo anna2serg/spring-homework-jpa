@@ -1,10 +1,12 @@
 package ru.homework.domain;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,7 +24,7 @@ import ru.homework.helper.StringHelper;
 public class Book {
     private int id;
     private String name;
-    private Set<Author> authors;
+    private Set<Author> authors = new HashSet<Author>();
     private Genre genre;
   
     public Book() {
@@ -53,7 +55,7 @@ public class Book {
         this.id = id;
     }
 
-    @ManyToMany(cascade = { CascadeType.ALL })
+    @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
     @JoinTable(
             name = "books_authors", 
             joinColumns = { @JoinColumn(name = "book_id") }, 

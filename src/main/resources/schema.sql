@@ -22,6 +22,8 @@ CREATE TABLE public.genres
     CONSTRAINT genres_pkey PRIMARY KEY (genre_id)
 );
 
+CREATE UNIQUE INDEX genre_name_uniq ON public.genres (name);
+
 CREATE TABLE public.authors
 (
     author_id integer NOT NULL,
