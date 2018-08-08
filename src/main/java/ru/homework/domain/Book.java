@@ -14,8 +14,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import ru.homework.helper.StringHelper;
 
@@ -26,6 +28,8 @@ public class Book {
     private String name;
     private Set<Author> authors = new HashSet<Author>();
     private Genre genre;
+    private Set<Comment> comments = new HashSet<Comment>();
+    private int score;
   
     public Book() {
     	super();
@@ -87,7 +91,26 @@ public class Book {
         this.genre = genre;
     }    
     
-    @Override
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "book")
+    public Set<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(Set<Comment> comments) {
+		this.comments = comments;
+	}
+
+	@Transient
+	public int getScore() {
+		score = 0;
+		for (Comment comment : comments) {
+			score += comment.getScore();
+		}
+		if (comments.size() > 0) score = score / comments.size();
+		return score;
+	}
+
+	@Override
     public String toString() {
     	String result = "";
     	String book_name = String.format("[%s] %s", id, name);
@@ -100,13 +123,15 @@ public class Book {
     	boolean isFirstAuthor = true;
     	for (Author author : authors) {
     		if (isFirstAuthor) {
-    			result += String.format("%-35s\r\n", author);
+    			result += String.format("%-35s", author);
+    			result += String.format("%-10s\r\n", getScore());
     		} else {
             	result += String.format("%-50s", "");
             	result += "| ";
             	result += String.format("%-25s", "");
             	result += "| ";
-            	result += String.format("%-35s\r\n", author);    		  			
+            	result += String.format("%-35s", author); 
+            	result += String.format("%-10s\r\n", "");	
     		}
     		isFirstAuthor = false;	
     	}

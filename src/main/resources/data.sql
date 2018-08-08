@@ -44,3 +44,8 @@ insert into BOOKS_AUTHORS(BOOK_ID, AUTHOR_ID) values (8, 10);
 insert into BOOKS_AUTHORS(BOOK_ID, AUTHOR_ID) values (8, 11);
 insert into BOOKS_AUTHORS(BOOK_ID, AUTHOR_ID) values (8, 12);
 insert into BOOKS_AUTHORS(BOOK_ID, AUTHOR_ID) values (9, 13);
+
+insert into COMMENTS(COMMENT_ID, BOOK_ID, COMMENTATOR, CONTENT, SCORE) values (1, 1, 'Людмила', 'Замечательная книга', 5);
+insert into COMMENTS(COMMENT_ID, BOOK_ID, CONTENT, SCORE) values (2, 1, 'Для детей самое то! Красочные иллюстрации. Ставлю 5 баллов', 5);
+insert into COMMENTS(COMMENT_ID, BOOK_ID, COMMENTATOR, CONTENT, SCORE) values (3, 2, 'Коробейник Андрей', 'Эта Книга может быть как полезной, так и может сильно навредить. Текст - не адаптирован к РФ. Будьте осторожны. ', 3);
+insert into COMMENTS(COMMENT_ID, BOOK_ID, COMMENTATOR, CONTENT, SCORE) values (4, 2, 'Крутилов Сергей', 'Увы, много воды и минимум практически осуществимых навыков. ', 2);
