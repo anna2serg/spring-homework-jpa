@@ -1,4 +1,4 @@
-package ru.homework.repostory;
+package ru.homework.repository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,7 +22,7 @@ import ru.homework.domain.Author;
 
 @Transactional
 @Repository
-public class AuthorRepostoryJpa implements AuthorRepostory {
+public class AuthorRepositoryJpa implements AuthorRepository {
 
     @PersistenceContext
     private EntityManager em;		

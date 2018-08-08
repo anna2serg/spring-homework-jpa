@@ -1,11 +1,11 @@
-package ru.homework.repostory;
+package ru.homework.repository;
 
 import java.util.HashMap;
 import java.util.List;
 
 import ru.homework.domain.Book;
 
-public interface BookRepostory {
+public interface BookRepository {
 	
 	int count();
 	int insert(Book book);

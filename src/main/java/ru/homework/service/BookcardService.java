@@ -9,9 +9,6 @@ import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
-import ru.homework.repostory.AuthorRepostory;
-import ru.homework.repostory.BookRepostory;
-import ru.homework.repostory.GenreRepostory;
 import ru.homework.domain.Author;
 import ru.homework.domain.Book;
 import ru.homework.domain.Genre;
@@ -19,15 +16,18 @@ import ru.homework.exception.EntityNotFoundException;
 import ru.homework.exception.InvalidOperationException;
 import ru.homework.exception.InvalidValueFormatException;
 import ru.homework.exception.NotUniqueEntityFoundException;
+import ru.homework.repository.AuthorRepository;
+import ru.homework.repository.BookRepository;
+import ru.homework.repository.GenreRepository;
 
 @Service
 public class BookcardService {
 	
-	private final BookRepostory bookRepostory;
-	private final GenreRepostory genreRepostory;
-	private final AuthorRepostory authorRepostory;
+	private final BookRepository bookRepostory;
+	private final GenreRepository genreRepostory;
+	private final AuthorRepository authorRepostory;
 
-	public BookcardService(AuthorRepostory authorRepostory, BookRepostory bookRepostory, GenreRepostory genreRepostory) {
+	public BookcardService(AuthorRepository authorRepostory, BookRepository bookRepostory, GenreRepository genreRepostory) {
 		this.authorRepostory = authorRepostory;
 		this.bookRepostory = bookRepostory;
 		this.genreRepostory = genreRepostory;

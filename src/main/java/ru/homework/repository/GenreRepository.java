@@ -1,11 +1,11 @@
-package ru.homework.repostory;
+package ru.homework.repository;
 
 import java.util.HashMap;
 import java.util.List;
 
 import ru.homework.domain.Genre;
 
-public interface GenreRepostory {
+public interface GenreRepository {
 	
 	int count();
 	int insert(Genre genre);

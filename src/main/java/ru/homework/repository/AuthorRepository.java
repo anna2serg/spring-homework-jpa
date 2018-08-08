@@ -1,11 +1,11 @@
-package ru.homework.repostory;
+package ru.homework.repository;
 
 import java.util.HashMap;
 import java.util.List;
 
 import ru.homework.domain.Author;
 
-public interface AuthorRepostory {
+public interface AuthorRepository {
 	
 	int count();
 	int insert(Author author);

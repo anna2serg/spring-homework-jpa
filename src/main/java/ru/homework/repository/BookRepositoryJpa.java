@@ -1,4 +1,4 @@
-package ru.homework.repostory;
+package ru.homework.repository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,7 +25,7 @@ import ru.homework.domain.Genre;
 
 @Transactional
 @Repository
-public class BookRepostoryJpa implements BookRepostory {
+public class BookRepositoryJpa implements BookRepository {
 
     @PersistenceContext
     private EntityManager em;		
