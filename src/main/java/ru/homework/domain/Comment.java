@@ -17,7 +17,7 @@ import javax.persistence.Table;
 public class Comment {
     private int id;
     private Book book;    
-    private String commentator = "Anonym";
+    private String commentator;
     private String content;
     private short score;
     
@@ -25,17 +25,21 @@ public class Comment {
         super();
     } 
 
-    public Comment(Book book, String commentator, String content, short score) {
-        this(0, book, commentator, content, score);
+    public Comment(Book book, short score, String content, String commentator) {
+        this(0, book, score, content, commentator);
     }       
     
-    public Comment(int id, Book book, String commentator, String content, short score) {
+    public Comment(int id, Book book, short score, String content, String commentator) {
         super();
         this.id = id;
         this.book = book;
-        this.commentator = commentator;
+        if (commentator == null || commentator.isEmpty()) {
+        	this.commentator = "Anonym";
+        } else {
+        	this.commentator = commentator;
+        }
         this.content = content;
-        this.setScore(score);
+        this.score = score;
     }        
 
     @Id
@@ -86,7 +90,7 @@ public class Comment {
 
 	@Override
     public String toString() {
-        return String.format("[%s] %s: (%s) \"%s\"", id, commentator, score, content);
+        return String.format("[%s] %s: %s %s", id, commentator, score, content == null ? "" : "- \""+content+"\"");
     }    
  
 

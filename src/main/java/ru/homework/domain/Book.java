@@ -29,7 +29,7 @@ public class Book {
     private Set<Author> authors = new HashSet<Author>();
     private Genre genre;
     private Set<Comment> comments = new HashSet<Comment>();
-    private int score;
+    private float score;
   
     public Book() {
     	super();
@@ -101,12 +101,16 @@ public class Book {
 	}
 
 	@Transient
-	public int getScore() {
+	public float getScore() {
 		score = 0;
 		for (Comment comment : comments) {
 			score += comment.getScore();
 		}
-		if (comments.size() > 0) score = score / comments.size();
+		if (comments.size() > 0) { 
+			score = score / comments.size();
+			String str = String.format(java.util.Locale.US, "%.2f", score);
+			score = Float.parseFloat(str); 
+		}
 		return score;
 	}
 

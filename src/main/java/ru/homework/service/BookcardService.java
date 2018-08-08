@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ru.homework.domain.Author;
 import ru.homework.domain.Book;
+import ru.homework.domain.Comment;
 import ru.homework.domain.Genre;
 import ru.homework.exception.EntityNotFoundException;
 import ru.homework.exception.InvalidOperationException;
@@ -18,6 +19,7 @@ import ru.homework.exception.InvalidValueFormatException;
 import ru.homework.exception.NotUniqueEntityFoundException;
 import ru.homework.repository.AuthorRepository;
 import ru.homework.repository.BookRepository;
+import ru.homework.repository.CommentRepository;
 import ru.homework.repository.GenreRepository;
 
 @Service
@@ -26,15 +28,17 @@ public class BookcardService {
 	private final BookRepository bookRepostory;
 	private final GenreRepository genreRepostory;
 	private final AuthorRepository authorRepostory;
+	private final CommentRepository commentRepostory;
 
-	public BookcardService(AuthorRepository authorRepostory, BookRepository bookRepostory, GenreRepository genreRepostory) {
+	public BookcardService(AuthorRepository authorRepostory, BookRepository bookRepostory, GenreRepository genreRepostory, CommentRepository commentRepostory) {
 		this.authorRepostory = authorRepostory;
 		this.bookRepostory = bookRepostory;
 		this.genreRepostory = genreRepostory;
+		this.commentRepostory = commentRepostory;
 	}
 
-	private int getId(String id) {
-		int result = 0;
+	private int getInt(String id) {
+		int result = -1;
 		try {  
 			result = Integer.parseInt(id);
 	    } catch (NumberFormatException e) {  
@@ -45,8 +49,8 @@ public class BookcardService {
 	
 	public Genre getGenre(String genre) throws EntityNotFoundException {
 		Genre result = null;
-		int genre_id = getId(genre);		
-		if (genre_id == 0) {
+		int genre_id = getInt(genre);		
+		if (genre_id == -1) {
 			//genre - строка
 			result = genreRepostory.getByName(genre);				
 		} else {
@@ -98,8 +102,8 @@ public class BookcardService {
 	
 	public List<Author> getAuthors(String author) throws EntityNotFoundException {
 		List<Author> result = null;
-		int author_id = getId(author);
-		if (author_id == 0) {
+		int author_id = getInt(author);
+		if (author_id == -1) {
 			//author - строка
 			List<String> names;
 			try {
@@ -160,8 +164,8 @@ public class BookcardService {
 	
 	public List<Book> getBooks(String book) throws EntityNotFoundException {
 		List<Book> result = null;
-		int book_id = getId(book);
-		if (book_id == 0) {
+		int book_id = getInt(book);
+		if (book_id == -1) {
 			//book - строка
 			result = bookRepostory.getByName(book);
 		} else {
@@ -183,7 +187,7 @@ public class BookcardService {
 		try {
 			result = getGenre(genre);
 		} catch (EntityNotFoundException e) {
-			if (getId(genre)!=0) throw e;
+			if (getInt(genre)!=-1) throw e;
 			else result = addGenre(genre);
 		}	
 		return result;
@@ -195,7 +199,7 @@ public class BookcardService {
 		try {
 			result = getAuthor(author);	
 		} catch (EntityNotFoundException e) {
-			if (getId(author)!=0) throw e;
+			if (getInt(author)!=-1) throw e;
 			else {
 				List<String> names;
 				try {
@@ -297,6 +301,18 @@ public class BookcardService {
 		authorRepostory.delete(exAuthor);
 		result = true;
 		return result;
-	}		
+	}	
+	
+	@Transactional 
+	public Comment addComment(String book, String score, String content, String commentator) throws EntityNotFoundException, NotUniqueEntityFoundException, InvalidValueFormatException {
+		Comment result = null;
+		int iScore = getInt(score);
+		if ((iScore < 0) || (iScore >= 6)) 
+			throw new InvalidValueFormatException(String.format("Неправильно задана оценка [%s]", score));
+		Book commentedBook = getBook(book);
+		result = new Comment(commentedBook, (short)iScore, content, commentator);
+		commentRepostory.insert(result);
+		return result;
+	}
 	
 }
