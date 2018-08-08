@@ -41,9 +41,9 @@ public class BookCommands {
     	if (genre != null && !genre.isEmpty()) 
     		filters.put("genre", genre); 
     	if (authorId != null && !authorId.isEmpty()) 
-    		filters.put("authorId", authorId);
+    		filters.put("author_id", authorId);
     	if (genreId != null && !genreId.isEmpty()) 
-    		filters.put("genreId", genreId);   
+    		filters.put("genre_id", genreId);   
     	fetcher.output(service.getBookAll(filters));
     }
     

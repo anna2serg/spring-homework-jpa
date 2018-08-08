@@ -55,7 +55,7 @@ public class Book {
         this.id = id;
     }
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+    @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
     @JoinTable(
             name = "books_authors", 
             joinColumns = { @JoinColumn(name = "book_id") }, 
@@ -77,7 +77,7 @@ public class Book {
         this.name = name;
     }      
     
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name="genre_id")
     public Genre getGenre() {
         return genre;

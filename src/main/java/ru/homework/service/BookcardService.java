@@ -1,13 +1,13 @@
 package ru.homework.service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import ru.homework.domain.Author;
 import ru.homework.domain.Book;
@@ -62,6 +62,7 @@ public class BookcardService {
 		return genreRepostory.getAll(filters);
 	}	
 	
+	@Transactional 
 	public Genre addGenre(String name) {
 		Genre result = null;
 		result = new Genre(name);
@@ -69,6 +70,7 @@ public class BookcardService {
 		return result;
 	}
 	
+	@Transactional 
 	public Genre editGenre(String genre, String name) throws EntityNotFoundException {
 		Genre result = getGenre(genre);
 		result.setName(name);
@@ -77,10 +79,14 @@ public class BookcardService {
 	}	
 	
 	private List<String> getAuthorNames(String str) throws InvalidValueFormatException {
-		List<String> result = Arrays.asList(str.split(",")); 
-		if (result.size() < 2)  
+		String[] names = str.split(",");			
+		if (names.length < 2)  
 			throw new InvalidValueFormatException(String.format("Неправильно задан автор [%s]", str));
-		else return result;
+		List<String> result = new ArrayList<String>(); 
+		for (String name : names) {
+			result.add(name.trim());
+		}		
+		return result;
 	}
 	
 	public Author getAuthor(String author) throws EntityNotFoundException, NotUniqueEntityFoundException {
@@ -119,6 +125,7 @@ public class BookcardService {
 		return authorRepostory.getAll(filters);
 	}		
 	
+	@Transactional 
 	public Author addAuthor(String surname, String firstname, String middlename) {
 		Author result = null;
 		result = new Author(surname, firstname, middlename);
@@ -126,6 +133,7 @@ public class BookcardService {
 		return result;		
 	}	
 	
+	@Transactional 
 	public Author editAuthor(String author, HashMap<String, String> values) throws EntityNotFoundException, NotUniqueEntityFoundException {
 		Author result = getAuthor(author);	
 		if (values.get("surname")!=null) 
@@ -201,6 +209,7 @@ public class BookcardService {
 		return result;
 	}
 	
+	@Transactional 
 	public Book addBook(String name, String genre, String author) throws EntityNotFoundException, NotUniqueEntityFoundException {	
 		Book result = null;
 		
@@ -215,6 +224,7 @@ public class BookcardService {
 		return result;
 	}	
 	
+	@Transactional 
 	public Book editBook(String book, HashMap<String, String> values) throws EntityNotFoundException, InvalidOperationException, NotUniqueEntityFoundException {
 		Book result = getBook(book);
 		if (values.get("name")!=null) 
@@ -252,6 +262,7 @@ public class BookcardService {
 		return result;
 	}
 	
+	@Transactional 
 	public boolean deleteBook(String book) throws EntityNotFoundException, NotUniqueEntityFoundException {
 		boolean result = false;
 		Book bookToDelete = getBook(book);
@@ -260,6 +271,7 @@ public class BookcardService {
 		return result;
 	}
 	
+	@Transactional 
 	public boolean deleteGenre(String genre) throws EntityNotFoundException, InvalidOperationException {
 		boolean result = false;
 		Genre exGenre = getGenre(genre);
@@ -273,6 +285,7 @@ public class BookcardService {
 		return result;
 	}	
 	
+	@Transactional 
 	public boolean deleteAuthor(String author) throws EntityNotFoundException, InvalidOperationException, NotUniqueEntityFoundException {
 		boolean result = false;
 		Author exAuthor = getAuthor(author);
