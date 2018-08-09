@@ -33,29 +33,61 @@ public class GenreRepositoryJpaTest {
 	@Test
     @Transactional
     @Rollback(true)	
-	public void test() {
-		int count = genreRepository.count();
+	public void testInsert() {
 		Genre testGenre = new Genre("Изобразительное искусство");
 		int testGenreId = genreRepository.insert(testGenre);
-		assertTrue(genreRepository.count() == (count + 1));
 		Genre dbGenre = genreRepository.getById(testGenreId);
 		assertEquals(testGenre, dbGenre);
+	}		
+	
+	@Test
+    @Transactional
+    @Rollback(true)	
+	public void testUpdate() {
+		Genre testGenre = new Genre("Изобразительное искусство");
+		genreRepository.insert(testGenre);		
 		testGenre.setName("Изобразительное искусство и фотография");
 		genreRepository.update(testGenre);
-		dbGenre = genreRepository.getById(testGenre.getId());
-		assertEquals(testGenre.getName(), dbGenre.getName());
+		Genre dbGenre = genreRepository.getById(testGenre.getId());
+		assertEquals(testGenre.getName(), dbGenre.getName());	
 		dbGenre = genreRepository.getByName("Изобразительное искусство и фотография");
-		assertEquals(testGenre, dbGenre);
-		testGenre = new Genre("Биографии и мемуары"); 
-		testGenreId = genreRepository.insert(testGenre);
+		assertEquals(testGenre, dbGenre);		
+	}		
+		
+	@Test
+    @Transactional
+    @Rollback(true)	
+	public void testDelete() {
+		Genre testGenre = new Genre("Изобразительное искусство");
+		int testGenreId = genreRepository.insert(testGenre);
+		genreRepository.delete(testGenre);
+		Genre dbGenre = genreRepository.getById(testGenreId);
+		assertNull(dbGenre);
+	}		
+	
+	@Test
+    @Transactional
+    @Rollback(true)	
+	public void testCount() {
+		int count = genreRepository.count();
+		Genre testGenre = new Genre("Изобразительное искусство");
+		genreRepository.insert(testGenre);
+		assertTrue(genreRepository.count() == (count + 1));
+	}	
+	
+	@Test
+    @Transactional
+    @Rollback(true)	
+	public void testGetAll() {
+		Genre genre1 = new Genre("Биографии и мемуары"); 
+		genreRepository.insert(genre1);
+		Genre genre2 = new Genre("Изобразительное искусство и фотография");
+		genreRepository.insert(genre2);
 		HashMap<String, String> filters = new HashMap<>();
 		filters.put("name", "граф");
 		List<Genre> genres = genreRepository.getAll(filters);
-		assertTrue(genres.contains(testGenre));
-		assertTrue(genres.contains(dbGenre));
-		genreRepository.delete(testGenre);
-		dbGenre = genreRepository.getById(testGenreId);
-		assertNull(dbGenre);
+		assertTrue(genres.contains(genre1));
+		assertTrue(genres.contains(genre2));
 	}
-
+	
 }
