@@ -92,7 +92,5 @@ public class Comment {
     public String toString() {
         return String.format("[%s] %s: %s %s", id, commentator, score, content == null ? "" : "- \""+content+"\"");
     }    
- 
-
-        
+     
 }

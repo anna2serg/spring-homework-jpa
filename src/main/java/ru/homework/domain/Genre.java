@@ -1,5 +1,7 @@
 package ru.homework.domain;
 
+import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -64,8 +66,8 @@ public class Genre {
         }       
         Genre other = (Genre)obj;
         
-        return ( (other.id == this.id) && 
-        		 (other.name.equals(this.name)) );
+        return ( (Objects.equals(other.id, this.id)) && 
+        		 (Objects.equals(other.name, this.name)) );
     }   
     
 }

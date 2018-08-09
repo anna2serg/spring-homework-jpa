@@ -315,4 +315,10 @@ public class BookcardService {
 		return result;
 	}
 	
+	@Transactional 
+	public List<Comment> getComments(String book) throws EntityNotFoundException, NotUniqueEntityFoundException {
+		Book commentedBook = getBook(book);
+		return new ArrayList<>(commentedBook.getComments());
+	}
+	
 }

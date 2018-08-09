@@ -1,6 +1,7 @@
 package ru.homework.domain;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -128,6 +129,7 @@ public class Book {
     	for (Author author : authors) {
     		if (isFirstAuthor) {
     			result += String.format("%-35s", author);
+    			result += "| ";
     			result += String.format("%-10s\r\n", getScore());
     		} else {
             	result += String.format("%-50s", "");
@@ -135,6 +137,7 @@ public class Book {
             	result += String.format("%-25s", "");
             	result += "| ";
             	result += String.format("%-35s", author); 
+            	result += "| ";
             	result += String.format("%-10s\r\n", "");	
     		}
     		isFirstAuthor = false;	
@@ -153,12 +156,14 @@ public class Book {
         }       
         Book other = (Book)obj;
         
-        return (other.id == this.id) && 
-			 (other.name.equals(this.name)) && 
-			 (other.genre.equals(this.genre)) &&
-			 (other.authors.size() == this.authors.size() &&
-			 (other.authors.containsAll(this.authors)) &&
-			 (this.authors.containsAll(other.authors)));    
+        return (Objects.equals(other.id, this.id)) && 
+        	   (Objects.equals(other.name, this.name)) && 
+			   (Objects.equals(other.genre, this.genre)) &&
+			   (Objects.equals(other.authors, this.authors))
+			   /*(other.authors.size() == this.authors.size() &&
+			   (other.authors.containsAll(this.authors)) &&
+			   (this.authors.containsAll(other.authors)))*/
+			   ;    
     }    
     
 }

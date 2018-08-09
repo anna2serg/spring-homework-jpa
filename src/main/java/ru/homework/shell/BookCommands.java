@@ -7,7 +7,6 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 
-import ru.homework.domain.Book;
 import ru.homework.exception.EntityNotFoundException;
 import ru.homework.exception.InvalidOperationException;
 import ru.homework.exception.NotUniqueEntityFoundException;
@@ -51,9 +50,7 @@ public class BookCommands {
     public void getBook(
     		@ShellOption(help="ИД или наименование") String book) {   	
         try {
-    		for (Book b : service.getBooks(book)) {
-    			System.out.println(b);
-    		}        	
+        	fetcher.output(service.getBooks(book));      	
 		} catch (EntityNotFoundException e) {
 			System.out.println(e.getMessage());
 		}

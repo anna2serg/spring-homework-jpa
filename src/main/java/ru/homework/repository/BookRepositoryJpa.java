@@ -8,7 +8,6 @@ import java.util.Map.Entry;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -33,8 +32,8 @@ public class BookRepositoryJpa implements BookRepository {
 	
 	@Override
 	public int count() {
-    	Query query = em.createQuery("select count(b.book_id) from Book b");
-        return (int) query.getSingleResult(); 
+		TypedQuery<Long> query = em.createQuery("select count(b.id) from Book b", Long.class);
+        return query.getSingleResult().intValue(); 		
 	}
 
 	@Override
@@ -61,9 +60,6 @@ public class BookRepositoryJpa implements BookRepository {
 		Root<Book> bookRoot = bookCriteria.from(Book.class);
 		Join<Book, Genre> withGenreJoin = bookRoot.join("genre", JoinType.LEFT);
 		Join<Book, Author> withAuthorJoin = bookRoot.join("authors", JoinType.LEFT);
-
-		//predicates.add(cb.equal(withGenreJoin.get("name"), "Учебная литература"));
-		//predicates.add(cb.like(cb.lower(withAuthorJoin.get("surname")), "%не%"));
 		
 		if (filters.keySet().size() > 0) {
 			final List<Predicate> predicates = new ArrayList<Predicate>();		
@@ -95,11 +91,7 @@ public class BookRepositoryJpa implements BookRepository {
 		    	            break;	    	            
 		    	        default:         
 		            }				    	
-
-			    	/*predicates.add(cb.like(cb.lower(bookRoot.get("surname")), "%" + value.toLowerCase() + "%"));
-			    	predicates.add(cb.like(cb.lower(bookRoot.get("firstname")), "%" + value.toLowerCase() + "%"));
-			    	predicates.add(cb.like(cb.lower(bookRoot.get("middlename")), "%" + value.toLowerCase() + "%"));*/
-		            
+	            
 			    }			
 			}
 			

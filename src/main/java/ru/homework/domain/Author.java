@@ -1,5 +1,6 @@
 package ru.homework.domain;
 
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -98,10 +99,10 @@ public class Author {
         }       
         Author other = (Author)obj;
          
-        return ( (other.id == this.id) && 
-        		 (other.firstname.equals(this.firstname)) && 
-        		 (other.surname.equals(this.surname)) &&
-        		 (other.middlename == null ? this.middlename == null : (this.middlename == null ? false : other.middlename.equals(this.middlename)) )
+        return ( (Objects.equals(other.id, this.id)) && 
+        		 (Objects.equals(other.firstname, this.firstname)) && 
+        		 (Objects.equals(other.surname, this.surname)) &&
+        		 (Objects.equals(other.middlename, this.middlename))
         	   );
     }
     

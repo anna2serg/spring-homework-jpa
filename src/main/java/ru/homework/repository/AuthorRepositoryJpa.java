@@ -8,7 +8,6 @@ import java.util.Map.Entry;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -29,8 +28,8 @@ public class AuthorRepositoryJpa implements AuthorRepository {
 	
 	@Override
 	public int count() {
-    	Query query = em.createQuery("select count(a.author_id) from Author a");
-        return (int) query.getSingleResult(); 
+		TypedQuery<Long> query = em.createQuery("select count(a.id) from Author a", Long.class);
+        return query.getSingleResult().intValue(); 			
 	}
 
 	@Override
