@@ -54,9 +54,18 @@ public class Genre {
     @Override
     public String toString() {
         return String.format("[%s] %s", id, name);
-    }    
- 
-    @Override
+    }
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
     public boolean equals(Object obj) {
         if (obj == this) {
             return true;
@@ -68,6 +77,6 @@ public class Genre {
         
         return ( (Objects.equals(other.id, this.id)) && 
         		 (Objects.equals(other.name, this.name)) );
-    }   
+    }  
     
 }

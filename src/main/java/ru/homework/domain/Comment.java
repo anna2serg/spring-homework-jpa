@@ -1,5 +1,7 @@
 package ru.homework.domain;
 
+import java.util.Objects;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -103,6 +105,35 @@ public class Comment {
     	result += "| ";     	
     	result += String.format("%-50s", StringHelper.ellipsize(this.book.toString(), 50));
 		return result;
-    }    
+    }
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((book == null) ? 0 : book.hashCode());
+		result = prime * result + ((commentator == null) ? 0 : commentator.hashCode());
+		result = prime * result + ((content == null) ? 0 : content.hashCode());
+		result = prime * result + id;
+		result = prime * result + score;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }  	
+        if (!(obj instanceof Comment)) {
+            return false;
+        }       
+        Comment other = (Comment)obj;
+        
+        return (Objects.equals(other.id, this.id)) && 
+        	   (Objects.equals(other.commentator, this.commentator)) && 
+			   (Objects.equals(other.content, this.content)) &&
+			   (Objects.equals(other.score, this.score)) &&
+			   (Objects.equals(other.book, this.book));    
+	}    
      
 }

@@ -87,8 +87,19 @@ public class Author {
 	@Override
     public String toString() {
         return String.format("[%s] %s %s %s", id, surname, firstname, (middlename != null && !middlename.isEmpty())?middlename:"");
-    } 
-    
+    }
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((firstname == null) ? 0 : firstname.hashCode());
+		result = prime * result + id;
+		result = prime * result + ((middlename == null) ? 0 : middlename.hashCode());
+		result = prime * result + ((surname == null) ? 0 : surname.hashCode());
+		return result;
+	}
+   
     @Override
     public boolean equals(Object obj) {
         if (obj == this) {
@@ -105,15 +116,5 @@ public class Author {
         		 (Objects.equals(other.middlename, this.middlename))
         	   );
     }
-    
-    @Override
-    public int hashCode() {
-        int result = 17;
-        result = 37 * result + id;
-        result = 37 * result + (surname == null ? 0 : surname.hashCode());
-        result = 37 * result + (firstname == null ? 0 : firstname.hashCode());
-        result = 37 * result + (middlename == null ? 0 : middlename.hashCode());
-		return result;       
-    }    
-    
+       
 }
