@@ -321,4 +321,29 @@ public class BookcardService {
 		return new ArrayList<>(commentedBook.getComments());
 	}
 	
+	@Transactional 
+	public List<Comment> getCommentAll(HashMap<String, String> filters) {
+		HashMap<String, String> newFilters = new HashMap<>();
+		if (filters.get("book")!= null && !filters.get("book").isEmpty()) {
+			try {
+				Book book = getBook(filters.get("book"));
+				newFilters.put("book_id", String.valueOf(book.getId()));
+			} catch (EntityNotFoundException | NotUniqueEntityFoundException e) {
+				newFilters.put("book", filters.get("book"));
+			}
+		}
+		if (filters.get("author")!= null && !filters.get("author").isEmpty()) {
+			try {
+				Author author = getAuthor(filters.get("author"));
+				newFilters.put("author_id", String.valueOf(author.getId()));
+			} catch (EntityNotFoundException | NotUniqueEntityFoundException e) {
+				newFilters.put("author", filters.get("author"));
+			}
+		}
+		if (filters.get("commentator")!= null && !filters.get("commentator").isEmpty()) {
+			newFilters.put("commentator", filters.get("commentator"));
+		}   				
+		return commentRepostory.getAll(newFilters);
+	}	
+	
 }

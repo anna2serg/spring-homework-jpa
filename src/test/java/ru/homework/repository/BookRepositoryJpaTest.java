@@ -53,7 +53,7 @@ public class BookRepositoryJpaTest {
 		assertTrue(testBookList.size()>0);		
 		dbBook = testBookList.get(0);
 		assertEquals(testBook, dbBook);	
-		testBookAuthors.clear();;
+		testBookAuthors.clear();
 		testBookAuthors.add(new Author(16, "Ткаченко", "Наталия", "Александровна"));
 		testBookAuthors.add(new Author(17, "Тумановская", "Мария", "Петровна"));
 		testBook = new Book("Букварь для малышей", testBookAuthors, testBookGenre);
