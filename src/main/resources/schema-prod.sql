@@ -41,7 +41,7 @@ CREATE TABLE public.books
 (
     book_id integer NOT NULL,
     name character varying(255),
-    genre_id integer,
+    genre_id integer NOT NULL,
     CONSTRAINT books_pkey PRIMARY KEY (book_id),
     CONSTRAINT fk_genre FOREIGN KEY (genre_id)
         REFERENCES public.genres (genre_id) MATCH SIMPLE

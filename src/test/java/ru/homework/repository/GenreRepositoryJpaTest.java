@@ -11,25 +11,29 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import org.springframework.shell.jline.InteractiveShellApplicationRunner;
-import org.springframework.shell.jline.ScriptShellApplicationRunner;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import ru.homework.domain.Genre;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(properties = {
-	InteractiveShellApplicationRunner.SPRING_SHELL_INTERACTIVE_ENABLED + "=false",
-	ScriptShellApplicationRunner.SPRING_SHELL_SCRIPT_ENABLED + "=false"
-})	
+@SpringBootTest
+@ActiveProfiles({"test"})
 public class GenreRepositoryJpaTest {
 	
 	@Autowired
 	private GenreRepositoryJpa genreRepository;	
 
+	@Test
+    @Transactional
+    @Rollback(true)	
+	public void isH2Test() {
+		Genre dbGenre = genreRepository.getById(1000);
+		assertEquals(dbGenre.getName(), "Тестовый жанр");
+	}		
+	
 	@Test
     @Transactional
     @Rollback(true)	

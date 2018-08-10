@@ -2,6 +2,7 @@ insert into GENRES (GENRE_ID, NAME) values (1, 'Нехудожественная
 insert into GENRES (GENRE_ID, NAME) values (2, 'Фантастика');
 insert into GENRES (GENRE_ID, NAME) values (3, 'Детская литература');
 insert into GENRES (GENRE_ID, NAME) values (4, 'Учебная литература');
+insert into GENRES (GENRE_ID, NAME) values (1000, 'Тестовый жанр');
 
 insert into AUTHORS (AUTHOR_ID, SURNAME, FIRSTNAME, MIDDLENAME) values (1, 'Вайткене','Любовь','Дмитриевна');
 insert into AUTHORS (AUTHOR_ID, SURNAME, FIRSTNAME) values (2, 'Макнаб','Крис');
