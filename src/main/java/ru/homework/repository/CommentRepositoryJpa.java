@@ -106,4 +106,9 @@ public class CommentRepositoryJpa implements CommentRepository {
 		return result;
 	}
 
+	@Override
+	public Comment getById(int id) {
+		return em.find(Comment.class, id);
+	}
+
 }

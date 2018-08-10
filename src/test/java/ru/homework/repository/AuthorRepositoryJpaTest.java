@@ -9,19 +9,16 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.shell.jline.InteractiveShellApplicationRunner;
-import org.springframework.shell.jline.ScriptShellApplicationRunner;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import ru.homework.domain.Author;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(properties = {
-	InteractiveShellApplicationRunner.SPRING_SHELL_INTERACTIVE_ENABLED + "=false",
-	ScriptShellApplicationRunner.SPRING_SHELL_SCRIPT_ENABLED + "=false"
-})	
+@SpringBootTest
+@ActiveProfiles({"test"})
 public class AuthorRepositoryJpaTest {
 
 	@Autowired
@@ -30,31 +27,70 @@ public class AuthorRepositoryJpaTest {
 	@Test
     @Transactional
     @Rollback(true)	
-	public void test() {
-		int count = authorRepository.count();
+	public void testInsert() {
 		Author testAuthor = new Author("Достоевский", "Федор", "Михайлович");
 		int testAuthorId = authorRepository.insert(testAuthor);
-		assertTrue(authorRepository.count() == (count + 1));
 		Author dbAuthor = authorRepository.getById(testAuthorId);
-		assertEquals(testAuthor, dbAuthor);
+		assertEquals(testAuthor, dbAuthor);		
+	}
+	
+	@Test
+    @Transactional
+    @Rollback(true)	
+	public void testUpdate() {
+		Author testAuthor = new Author("Достоевский", "Федор", "Михайлович");
+		authorRepository.insert(testAuthor);
 		testAuthor.setFirstname("Федя");
 		authorRepository.update(testAuthor);
-		dbAuthor = authorRepository.getById(testAuthor.getId());
-		assertEquals(testAuthor.getFirstname(), dbAuthor.getFirstname());	
-		List<Author> DostoevskyList = authorRepository.getByNames("Достоевский", "Федя", "Михайлович");
-		assertTrue(DostoevskyList.size()>0);
-		dbAuthor = DostoevskyList.get(0);
-		assertEquals(testAuthor, dbAuthor);
-		testAuthor = new Author("Салтыков-Щедрин", "Михаил", "Евграфович");
-		testAuthorId = authorRepository.insert(testAuthor);
+		Author dbAuthor = authorRepository.getById(testAuthor.getId());
+		assertEquals(testAuthor.getFirstname(), dbAuthor.getFirstname());			
+	}	
+	
+	@Test
+    @Transactional
+    @Rollback(true)	
+	public void testDelete() {
+		Author testAuthor = new Author("Достоевский", "Федор", "Михайлович");
+		int testAuthorId = authorRepository.insert(testAuthor);
+		authorRepository.delete(testAuthor);
+		Author dbAuthor = authorRepository.getById(testAuthorId);
+		assertNull(dbAuthor);			
+	}		
+	
+	@Test
+    @Transactional
+    @Rollback(true)	
+	public void testCount() {
+		int count = authorRepository.count();
+		Author testAuthor = new Author("Достоевский", "Федор", "Михайлович");
+		authorRepository.insert(testAuthor);
+		assertTrue(authorRepository.count() == (count + 1));		
+	}
+
+	@Test
+    @Transactional
+    @Rollback(true)	
+	public void testGetAll() {
+		Author author1 = new Author("Салтыков-Щедрин", "Михаил", "Евграфович");
+		authorRepository.insert(author1);
+		Author author2 = new Author("Достоевский", "Федя", "Михайлович");
+		authorRepository.insert(author2);		
 		HashMap<String, String> filters = new HashMap<>();
 		filters.put("name", "миха");
 		List<Author> authors = authorRepository.getAll(filters);
-		assertTrue(authors.contains(testAuthor));
-		assertTrue(authors.contains(dbAuthor));	
-		authorRepository.delete(testAuthor);
-		dbAuthor = authorRepository.getById(testAuthorId);
-		assertNull(dbAuthor);		
+		assertTrue(authors.contains(author1));
+		assertTrue(authors.contains(author2));			
+	}	
+	
+	@Test
+    @Transactional
+    @Rollback(true)	
+	public void testGetByNames() {
+		Author testAuthor = new Author("Достоевский", "Федя", "Михайлович");
+		authorRepository.insert(testAuthor);
+		List<Author> DostoevskyList = authorRepository.getByNames("Достоевский", "Федя", "Михайлович");
+		assertTrue(DostoevskyList.size()>0);
+		assertTrue(DostoevskyList.contains(testAuthor));	
 	}
 
 }
