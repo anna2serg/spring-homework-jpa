@@ -280,7 +280,7 @@ public class BookcardService {
 		boolean result = false;
 		Genre exGenre = getGenre(genre);
     	HashMap<String, String> filters = new HashMap<>();
-    	filters.put("genreId", String.valueOf(exGenre.getId()));  
+    	filters.put("genre_id", String.valueOf(exGenre.getId()));  
 		List<Book> bookByGenre = getBookAll(filters);
 		if ((bookByGenre != null) && (bookByGenre.size()>0)) 
 			throw new InvalidOperationException("Недопустимая операция: жанр используется");
@@ -294,7 +294,7 @@ public class BookcardService {
 		boolean result = false;
 		Author exAuthor = getAuthor(author);
     	HashMap<String, String> filters = new HashMap<>();
-    	filters.put("authorId", String.valueOf(exAuthor.getId()));  
+    	filters.put("author_id", String.valueOf(exAuthor.getId()));  
 		List<Book> bookByAuthor = getBookAll(filters);
 		if ((bookByAuthor != null) && (bookByAuthor.size()>0)) 
 			throw new InvalidOperationException("Недопустимая операция: автор используется");
